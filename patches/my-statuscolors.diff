@@ -1,32 +1,18 @@
-From 35418d156fccb922710f6ca80a1f3972ba88b42f Mon Sep 17 00:00:00 2001
-From: Danny O'Brien <danny@spesh.com>
-Date: Mon, 8 Oct 2018 19:21:29 -0700
-Subject: [PATCH] Add colors to status message in bar.
-
-This patch matches the format used by
-https://dwm.suckless.org/patches/statuscolors/ -- An \x01 character
-switches to the normal foreground/color combo, \x02 switches to the
-color combo used for selected tags, \03 is set by default to black on
-yellow, \04 is white on red.
-
-These color settings are defined in the colors array in config.def.h.
-More can be added, but don't have more than 32, or you'll start hitting
-real ASCII.
-
-This applies cleanly on mainline dwm from commit 022d076 (Sat Jan 7
-17:21:29 2017 +0100) until at least b69c870 (Sat Jun 2 17:15:42 2018
-+020).
+From cbbc55f9250fce4e99fd093514ee2704db218edd Mon Sep 17 00:00:00 2001
+From: Ryan M Sullivan <Deffpatch@gmail.com>
+Date: Thu, 30 Jan 2020 11:52:56 -0800
+Subject: [PATCH] Seventh patch
 
 ---
- config.def.h | 13 ++++++++++---
- dwm.c        | 18 ++++++++++++++++--
- 2 files changed, 26 insertions(+), 5 deletions(-)
+ config.def.h | 12 +++++++++---
+ dwm.c        | 17 ++++++++++++++++-
+ 2 files changed, 25 insertions(+), 4 deletions(-)
 
 diff --git a/config.def.h b/config.def.h
-index 1c0b587..df92695 100644
+index 099325f..2e21e79 100644
 --- a/config.def.h
 +++ b/config.def.h
-@@ -12,10 +12,17 @@ static const char col_gray2[]       = "#444444";
+@@ -14,12 +14,18 @@ static const char col_gray2[]       = "#444444";
  static const char col_gray3[]       = "#bbbbbb";
  static const char col_gray4[]       = "#eeeeee";
  static const char col_cyan[]        = "#005577";
@@ -34,7 +20,8 @@ index 1c0b587..df92695 100644
 +static const char col_red[]         = "#ff0000";
 +static const char col_yellow[]      = "#ffff00";
 +static const char col_white[]       = "#ffffff";
-+
+ static const unsigned int baralpha = 0xd0;
+ static const unsigned int borderalpha = OPAQUE;
  static const char *colors[][3]      = {
 -	/*               fg         bg         border   */
 -	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -45,14 +32,14 @@ index 1c0b587..df92695 100644
 +	[SchemeWarn] =	 { col_black, col_yellow, col_red },
 +	[SchemeUrgent]=	 { col_white, col_red,    col_red },
  };
-
- /* tagging */
+ static const unsigned int alphas[][3]      = {
+ 	/*               fg      bg        border     */
 diff --git a/dwm.c b/dwm.c
-index 4465af1..9d9d46f 100644
+index 98319fd..00daab6 100644
 --- a/dwm.c
 +++ b/dwm.c
-@@ -59,7 +59,7 @@
-
+@@ -61,7 +61,7 @@
+ 
  /* enums */
  enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
 -enum { SchemeNorm, SchemeSel }; /* color schemes */
@@ -60,21 +47,21 @@ index 4465af1..9d9d46f 100644
  enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
         NetWMFullscreen, NetActiveWindow, NetWMWindowType,
         NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
-@@ -699,13 +699,27 @@ drawbar(Monitor *m)
+@@ -733,6 +733,10 @@ drawbar(Monitor *m)
  	int boxs = drw->fonts->h / 9;
  	int boxw = drw->fonts->h / 6 + 2;
  	unsigned int i, occ = 0, urg = 0;
-+    char *ts = stext;
-+    char *tp = stext;
-+    int tx = 0;
-+    char ctmp;
++	char *ts = stext;
++	char *tp = stext;
++	int tx = 0;
++	char ctmp;
  	Client *c;
-
+ 
  	/* draw status first so it can be overdrawn by tags later */
- 	if (m == selmon) { /* status is only drawn on selected monitor */
+@@ -740,6 +744,17 @@ drawbar(Monitor *m)
  		drw_setscheme(drw, scheme[SchemeNorm]);
  		sw = TEXTW(stext) - lrpad + 2; /* 2px right padding */
--		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
+ 		drw_text(drw, m->ww - sw, 0, sw, bh, 0, stext, 0);
 +		while (1) {
 +			if ((unsigned int)*ts > LENGTH(colors)) { ts++; continue ; }
 +			ctmp = *ts;
@@ -87,8 +74,8 @@ index 4465af1..9d9d46f 100644
 +			tp = ++ts;
 +		}
  	}
-
+ 
  	for (c = m->clients; c; c = c->next) {
 -- 
-2.19.1
+2.25.0
 
