@@ -7,7 +7,7 @@ Index: dwm/moveresize.c
 ===================================================================
 --- /dev/null
 +++ dwm/moveresize.c
-@@ -0,0 +1,64 @@
+@@ -0,0 +1,63 @@
 +void
 +moveresize(const Arg *arg) {
 +	/* only floating windows can be moved */
@@ -71,4 +71,3 @@ Index: dwm/moveresize.c
 +		XWarpPointer(dpy, None, None, 0, 0, 0, 0, nmx, nmy);
 +	}
 +}
-+
