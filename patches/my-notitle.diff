@@ -1,19 +1,19 @@
-From 969dbbc548f16da5d94630e3d54e9c96c5296520 Mon Sep 17 00:00:00 2001
-From: Ryan Kes <alrayyes@gmail.com>
-Date: Thu, 28 Mar 2019 14:36:07 +0100
-Subject: [PATCH] dwm-notitle-6.2
+From f6a931782b52bb9724b666fdd28a6ce650c5e5b1 Mon Sep 17 00:00:00 2001
+From: Ryan M Sullivan <Deffpatch@gmail.com>
+Date: Tue, 4 Feb 2020 14:21:14 -0800
+Subject: [PATCH] Tenth patch
 
 ---
  config.def.h |  1 -
- dwm.c        | 20 ++++----------------
- 2 files changed, 4 insertions(+), 17 deletions(-)
+ dwm.c        | 24 ++++++------------------
+ 2 files changed, 6 insertions(+), 19 deletions(-)
 
 diff --git a/config.def.h b/config.def.h
-index 1c0b587..19330cd 100644
+index fb5f801..8d716cb 100644
 --- a/config.def.h
 +++ b/config.def.h
-@@ -102,7 +102,6 @@ static Button buttons[] = {
- 	/* click                event mask      button          function        argument */
+@@ -133,7 +133,6 @@ static Button buttons[] = {
+ 	{ ClkButton,            0,              Button1,        spawn,          {.v = dmenucmd } },
  	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
  	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
 -	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
@@ -21,33 +21,33 @@ index 1c0b587..19330cd 100644
  	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
  	{ ClkClientWin,         MODKEY,         Button2,        togglefloating, {0} },
 diff --git a/dwm.c b/dwm.c
-index 4465af1..bcf5cb1 100644
+index 53c09e0..39dce56 100644
 --- a/dwm.c
 +++ b/dwm.c
-@@ -64,8 +64,8 @@ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
+@@ -66,8 +66,8 @@ enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
         NetWMFullscreen, NetActiveWindow, NetWMWindowType,
         NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
  enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
--enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
+-enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkButton, ClkWinTitle,
 -       ClkClientWin, ClkRootWin, ClkLast }; /* clicks */
-+enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkClientWin,
++enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkButton, ClkClientWin,
 +       ClkRootWin, ClkLast }; /* clicks */
  
  typedef union {
  	int i;
-@@ -439,10 +439,8 @@ buttonpress(XEvent *e)
- 			arg.ui = 1 << i;
- 		} else if (ev->x < x + blw)
- 			click = ClkLtSymbol;
--		else if (ev->x > selmon->ww - TEXTW(stext))
--			click = ClkStatusText;
- 		else
--			click = ClkWinTitle;
-+			click = ClkStatusText;
+@@ -469,10 +469,8 @@ buttonpress(XEvent *e)
+ 				arg.ui = 1 << i;
+ 			} else if (ev->x < x + blw)
+ 				click = ClkLtSymbol;
+-			else if (ev->x > selmon->ww - TEXTW(stext))
+-				click = ClkStatusText;
+ 			else
+-				click = ClkWinTitle;
++				click = ClkStatusText;
+ 		}
  	} else if ((c = wintoclient(ev->window))) {
  		focus(c);
- 		restack(selmon);
-@@ -729,15 +727,8 @@ drawbar(Monitor *m)
+@@ -798,15 +796,8 @@ drawbar(Monitor *m)
  	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
  
  	if ((w = m->ww - sw - x) > bh) {
@@ -57,13 +57,15 @@ index 4465af1..bcf5cb1 100644
 -			if (m->sel->isfloating)
 -				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
 -		} else {
- 			drw_setscheme(drw, scheme[SchemeNorm]);
- 			drw_rect(drw, x, 0, w, bh, 1, 1);
+-			drw_setscheme(drw, scheme[SchemeNorm]);
+-			drw_rect(drw, x, 0, w, bh, 1, 1);
 -		}
++		drw_setscheme(drw, scheme[SchemeNorm]);
++		drw_rect(drw, x, 0, w, bh, 1, 1);
  	}
  	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
  }
-@@ -1235,11 +1226,8 @@ propertynotify(XEvent *e)
+@@ -1305,11 +1296,8 @@ propertynotify(XEvent *e)
  			drawbars();
  			break;
  		}
@@ -77,5 +79,5 @@ index 4465af1..bcf5cb1 100644
  			updatewindowtype(c);
  	}
 -- 
-2.21.0
+2.25.0
 
