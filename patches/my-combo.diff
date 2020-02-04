@@ -1,20 +1,45 @@
+From 322b731717b10d992b32a7e30d886d3266ef32b6 Mon Sep 17 00:00:00 2001
+From: Ryan M Sullivan <Deffpatch@gmail.com>
+Date: Tue, 4 Feb 2020 14:45:18 -0800
+Subject: [PATCH] Twelfth patch
+
+---
+ config.h |  4 ++--
+ dwm.c    | 42 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 44 insertions(+), 2 deletions(-)
+
+diff --git a/config.h b/config.h
+index 8d716cb..a915cff 100644
+--- a/config.h
++++ b/config.h
+@@ -62,9 +62,9 @@ static const Layout layouts[] = {
+ /* key definitions */
+ #define MODKEY Mod1Mask
+ #define TAGKEYS(KEY,TAG) \
+-	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
++	{ MODKEY,                       KEY,      comboview,           {.ui = 1 << TAG} }, \
+ 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
+-	{ MODKEY|ShiftMask,             KEY,      tag,            {.ui = 1 << TAG} }, \
++	{ MODKEY|ShiftMask,             KEY,      combotag,            {.ui = 1 << TAG} }, \
+ 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
+ 
+ /* helper for spawning shell commands in the pre dwm-5.0 fashion */
 diff --git a/dwm.c b/dwm.c
-index 0362114..40b7a99 100644
+index be4d600..f537a23 100644
 --- a/dwm.c
 +++ b/dwm.c
-@@ -234,6 +234,11 @@ static int xerrordummy(Display *dpy, XErrorEvent *ee);
- static int xerrorstart(Display *dpy, XErrorEvent *ee);
+@@ -248,6 +248,10 @@ static int xerrorstart(Display *dpy, XErrorEvent *ee);
+ static void xinitvisual();
  static void zoom(const Arg *arg);
  
 +static void keyrelease(XEvent *e);
 +static void combotag(const Arg *arg);
 +static void comboview(const Arg *arg);
 +
-+
  /* variables */
  static const char broken[] = "broken";
  static char stext[256];
-@@ -244,6 +249,7 @@ static int (*xerrorxlib)(Display *, XErrorEvent *);
+@@ -259,6 +263,7 @@ static int (*xerrorxlib)(Display *, XErrorEvent *);
  static unsigned int numlockmask = 0;
  static void (*handler[LASTEvent]) (XEvent *) = {
  	[ButtonPress] = buttonpress,
@@ -22,7 +47,7 @@ index 0362114..40b7a99 100644
  	[ClientMessage] = clientmessage,
  	[ConfigureRequest] = configurerequest,
  	[ConfigureNotify] = configurenotify,
-@@ -251,6 +257,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
+@@ -266,6 +271,7 @@ static void (*handler[LASTEvent]) (XEvent *) = {
  	[EnterNotify] = enternotify,
  	[Expose] = expose,
  	[FocusIn] = focusin,
@@ -30,7 +55,7 @@ index 0362114..40b7a99 100644
  	[KeyPress] = keypress,
  	[MappingNotify] = mappingnotify,
  	[MapRequest] = maprequest,
-@@ -274,6 +281,42 @@ static Window root;
+@@ -299,6 +305,42 @@ struct Pertag {
  struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
  
  /* function implementations */
@@ -73,3 +98,6 @@ index 0362114..40b7a99 100644
  void
  applyrules(Client *c)
  {
+-- 
+2.25.0
+
