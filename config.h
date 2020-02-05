@@ -70,6 +70,7 @@ static const Layout layouts[] = {
  */
 #define MODKEY Mod4Mask
 #define XF86Calculator 0x1008ff1d
+#define XF86PowerOff 0x1008ff2a
 #define XF86Explorer 0x1008ff5d
 #define XF86MonBrightnessUp 0x1008ff05
 #define XF86MonBrightnessDown 0x1008ff06
@@ -152,6 +153,7 @@ static Key keys[] = {
 	TAGKEYS(                        XK_7,                      6)
 	TAGKEYS(                        XK_8,                      7)
 	TAGKEYS(                        XK_9,                      8)
+	{ 0,                            XF86PowerOff, spawn,       {.v = cmdpower } },
 	{ MODKEY|ShiftMask,             XK_q,      dmenu_logout,   {0} },
 	{ MODKEY,                       XK_F1,     mpdchange,      {.i = -1} },
 	{ MODKEY,                       XK_F2,     mpdchange,      {.i = +1} },
