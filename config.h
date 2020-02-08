@@ -4,6 +4,8 @@
 static const unsigned int borderpx  = 0;        /* border pixel of windows */
 static const unsigned int gappx     = 0;        /* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int barsize    = 10;       /* size of the dwm bar */
+static const unsigned int tagspacing = 10;        /* size of icon area */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char buttonbar[]       = "<O>";
