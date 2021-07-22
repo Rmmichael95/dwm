@@ -1,0 +1,35 @@
+/* Bar functionality */
+#include "bar_indicators.h"
+#include "bar_tagicons.h"
+#include "bar_time.h"
+#include "dmenu_logout.h"
+
+#include "bar_alpha.h"
+#include "bar_dwmblocks.h"
+#include "bar_ewmhtags.h"
+#include "combo.h"
+#include "bar_ltsymbol.h"
+#include "bar_status.h"
+#include "bar_statusbutton.h"
+#include "bar_statuscmd.h"
+#include "bar_tags.h"
+
+/* Other patches */
+#include "attachx.h"
+#include "cyclelayouts.h"
+#include "focusdir.h"
+#include "fullscreen.h"
+#include "mpdcontrol.h"
+#include "moveresize.h"
+#include "placemouse.h"
+#include "roundedcorners.h"
+#include "stacker.h"
+#include "sticky.h"
+#include "swallow.h"
+#include "togglefullscreen.h"
+#include "transfer.h"
+#include "vanitygaps.h"
+/* Layouts */
+#include "layout_flextile-deluxe.h"
+#include "layout_grid.h"
+
