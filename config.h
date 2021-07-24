@@ -28,9 +28,9 @@ static char normbgcolor[]                = "#222222";
 static char normbordercolor[]            = "#444444";
 static char normfloatcolor[]             = "#db8fd9";
 
-static char selfgcolor[]                 = "#eeeeee";
-static char selbgcolor[]                 = "#005577";
-static char selbordercolor[]             = "#005577";
+static char selfgcolor[]                 = "#bbbbbb";
+static char selbgcolor[]                 = "#444444";
+static char selbordercolor[]             = "#444444";
 static char selfloatcolor[]              = "#005577";
 
 static char titlenormfgcolor[]           = "#bbbbbb";
@@ -119,10 +119,10 @@ static char *colors[][ColCount] = {
  * until it an icon matches. Similarly if there are two tag icons then it would alternate between
  * them. This works seamlessly with alternative tags and alttagsdecoration patches.
  */
-static char *tagicons[][10] = {
+static char *tagicons[][NUMTAGS] = {
 	[DEFAULT_TAGS]        = { "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" },
-	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E", "F", "G", "H", "I" },
-	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
+//	[ALTERNATIVE_TAGS]    = { "A", "B", "C", "D", "E", "F", "G", "H", "I" },
+//	[ALT_TAGS_DECORATION] = { "<1>", "<2>", "<3>", "<4>", "<5>", "<6>", "<7>", "<8>", "<9>" },
 };
 
 /* There are two options when it comes to per-client rules:
@@ -181,7 +181,7 @@ static const BarRule barrules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;    /* number of clients in master area */
 static const int nstack      = 0;    /* number of clients in primary stack area */
 static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
@@ -211,23 +211,6 @@ static const Layout layouts[] = {
 
 /* key definitions */
 #define MODKEY Mod4Mask
-#define XF86PowerOff 0x1008ff2a
-#define XF86Calculator 0x1008ff1d
-#define XF86RFKill 0x1008ffb5
-#define XF86WakeUp 0x1008ff2b
-#define XF86MonBrightnessUp 0x1008ff02
-#define XF86MonBrightnessDown 0x1008ff03
-#define XF86AudioMicMute 0x1008ffb2
-#define XF86Explorer 0x1008ff5d
-#define XF86AudioLowerVolume 0x1008ff11
-#define XF86AudioMute 0x1008ff12
-#define XF86AudioRaiseVolume 0x1008ff13
-#define XF86AudioPlay 0x1008ff14
-#define XF86AudioStop 0x1008ff15
-#define XF86AudioPrev 0x1008ff16
-#define XF86AudioNext 0x1008ff17
-#define XF86HomePage 0x1008ff18
-#define XF86Mail 0x1008ff19
 #define TAGKEYS(KEY,TAG) \
 	{ MODKEY,                       KEY,      comboview,      {.ui = 1 << TAG} }, \
 	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -253,46 +236,38 @@ static const char *dmenucmd[] = {
 	"dmenu_run",
 	"-m", dmenumon,
 	"-fn", dmenufont,
-	"-nb", normbgcolor,
-	"-nf", normfgcolor,
-	"-sb", selbgcolor,
-	"-sf", selfgcolor,
+	"-nb", "#222222", //normbgcolor,
+	"-nf", "#bbbbbb", //normfgcolor,
+	"-sb", "#444444", //selbgcolor,
+	"-sf", "#bbbbbb", //selfgcolor,
 	NULL
 };
 static const char *termcmd[]  = { "alacritty", NULL };
 
 // My commands
-
 /* static const char *fzfcmd[] = { "fzf_dmenu", "fzf_cmd", "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL }; */
 //static const char *cmdinfo[] = { "sysinfo", NULL };
-//static const char *cmdmail[]       = { "alacritty", "-c", "neomutt", "-e", "neomutt", NULL};
-//static const char *cmdnewsboat[] = { "alacritty", "-c", "newsboat", "-e", "newsboat", NULL };
 /* static const char *cmdlock[]       = { "amixer", "-q", "sset", "Master", "mute", "&&", "locki3.sh", NULL}; */
-
-// END
 
 /* This defines the name of the executable that handles the bar (used for signalling purposes) */
 #define STATUSBAR "dwmblocks"
 
-
+#include <X11/XF86keysym.h>
 static Key keys[] = {
 	/* modifier                     key            function                argument */
     /* My keys */
-    { 0,                            XF86PowerOff,         spawn,         SHCMD("$HOME/.local/bin/dmenu_power 'Do you want to poweroff?' 'sudo poweroff' 'sudo reboot'") },
-	{ MODKEY|ShiftMask,             XK_q,                 dmenu_logout,  {0} },
 //	{ MODKEY,                       XK_F1,                mpdchange,     {.i = -1} },
 //	{ MODKEY,                       XK_F2,                mpdchange,     {.i = +1} },
 //	{ MODKEY,                       XK_Escape,            mpdcontrol,    {0} },
-	{ 0,                            XF86AudioRaiseVolume, spawn,         SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
-	{ 0,                            XF86AudioLowerVolume, spawn,         SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },
-	{ 0,                            XF86AudioMute,        spawn,         SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
-	{ 0,                            XF86MonBrightnessUp,  spawn,         SHCMD("sudo brightness up") },
-	{ 0,                            XF86MonBrightnessDown,spawn,         SHCMD("sudo brightness down") },
 //	{ 0,                            XF86AudioPrev,        mpdchange,     {.i = -1} },
 //	{ 0,                            XF86AudioNext,        mpdchange,     {.i = +1} },
 //	{ 0,                            XF86AudioStop,        mpdcontrol,    {.i = -1} },
 //	{ 0,                            XF86AudioPlay,        mpdcontrol,    {.i = +1} },
-//	{ 0,                            XF86Mail,             spawn,         {.v = cmdmail } },
+	{ 0,                            XF86XK_AudioRaiseVolume, spawn,         SHCMD("pamixer --allow-boost -i 3; kill -44 $(pidof dwmblocks)") },
+	{ 0,                            XF86XK_AudioLowerVolume, spawn,         SHCMD("pamixer --allow-boost -d 3; kill -44 $(pidof dwmblocks)") },
+	{ 0,                            XF86XK_AudioMute,        spawn,         SHCMD("pamixer -t; kill -44 $(pidof dwmblocks)") },
+    { 0,                            XF86XK_PowerOff,         spawn,         SHCMD("$HOME/.local/bin/dmenu_power 'Do you want to poweroff?' 'sudo poweroff' 'sudo reboot'") },
+	{ MODKEY|ShiftMask,             XK_q,                 dmenu_logout,  {0} },
 	{ MODKEY,                       XK_r,          spawn,                  {.v = dmenucmd } },
 	{ MODKEY,                       XK_Return,     spawn,                  {.v = termcmd } },
 	{ MODKEY,                       XK_b,          togglebar,              {0} },
@@ -336,7 +311,6 @@ static Key keys[] = {
 	{ MODKEY|Mod1Mask|ShiftMask,    XK_0,          defaultgaps,            {0} },
 	{ MODKEY,                       XK_Tab,        view,                   {0} },
 	{ MODKEY|ShiftMask,             XK_x,          killclient,             {0} },
-//	{ MODKEY|ShiftMask,             XK_q,          quit,                   {0} },
 	{ MODKEY,                       XK_t,          setlayout,              {.v = &layouts[0]} },
 	{ MODKEY,                       XK_f,          setlayout,              {.v = &layouts[1]} },
 	{ MODKEY,                       XK_m,          setlayout,              {.v = &layouts[2]} },
@@ -362,9 +336,6 @@ static Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_period,     tagmon,                 {.i = +1 } },
 	{ MODKEY|ControlMask,           XK_comma,      cyclelayout,            {.i = -1 } },
 	{ MODKEY|ControlMask,           XK_period,     cyclelayout,            {.i = +1 } },
-	{ MODKEY,                       XK_F1,         mpdchange,              {.i = -1} },
-	{ MODKEY,                       XK_F2,         mpdchange,              {.i = +1} },
-	{ MODKEY,                       XK_Escape,     mpdcontrol,             {0} },
 	TAGKEYS(                        XK_1,                                  0)
 	TAGKEYS(                        XK_2,                                  1)
 	TAGKEYS(                        XK_3,                                  2)
@@ -385,7 +356,8 @@ static Button buttons[] = {
 	{ ClkButton,            0,                   Button1,        spawn,          SHCMD("$HOME/.local/bin/rotate.sh")  },
 	{ ClkLtSymbol,          0,                   Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,                   Button3,        setlayout,      {.v = &layouts[2]} },
-	{ ClkTime,              0,                   Button1,        spawn,          SHCMD("$HOME/.local/bin/rotate.sh") },
+	{ ClkTime,              0,                   Button1,        spawn,          SHCMD("$HOME/.local/bin/statusbar/clock_lclick") },
+	{ ClkTime,              0,                   Button3,        spawn,          SHCMD("$HOME/.local/bin/statusbar/clock_rclick") },
 	{ ClkStatusText,        0,                   Button1,        sigstatusbar,   {.i = 1 } },
 	{ ClkStatusText,        0,                   Button2,        sigstatusbar,   {.i = 2 } },
 	{ ClkStatusText,        0,                   Button3,        sigstatusbar,   {.i = 3 } },
